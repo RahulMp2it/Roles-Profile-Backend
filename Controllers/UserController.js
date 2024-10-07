@@ -7,7 +7,7 @@ class UserController {
     const {name, email, password, passwordConfirmation} = req.body
     const user = await UserModel.findOne({email: email})
     if(user){
-      res.send({"status": "faild", "message": "Email already exists"})
+      res.send({"status": "failed", "message": "Email already exists"})
     }else {
         if(name && password && passwordConfirmation){
           if(password === passwordConfirmation){
@@ -35,7 +35,7 @@ class UserController {
           }
         }
      else {
-      res.send({"status": "faild", "message": "All fields are required"})
+      res.send({"status": "failed", "message": "All fields are required"})
       }
   }
   }
@@ -50,13 +50,13 @@ class UserController {
             if((user.email === email) && isMatch){
               //Generate jwt Token
               const token = jwt.sign({userID: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
-              res.send({"status": "Success", "message": "Login Successfully", "token": token})
+              res.send({success:true, "message": "Login Successfully", "token": token})
             }else{
-              res.send({"status": "faild", "message": "Email or password is not valid"})
+              res.send({success:false, "message": "Email or password is not valid"})
             }
           }
           else{
-            res.send({"status": "faild", "message": "You are not a rgister user"})
+            res.send({success:false, "message": "You are not a rgister user"})
 
           }
       }else{
