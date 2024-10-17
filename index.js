@@ -24,9 +24,9 @@ app.use(express.json())
 
 // Load Routes
 app.use("/api/user", userRoutes)
-app.use('/api/employee', router); 
-app.use('/api/department', departRouter); 
-app.use('/api/designation', designationRouter); 
+app.use('/api/employee', router);
+app.use('/api/department', departRouter);
+app.use('/api/designation', designationRouter);
 app.use('/api/profile', profileRouter);
 
 

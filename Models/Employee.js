@@ -16,11 +16,11 @@ const employeeSchema = new mongoose.Schema({
     trim: true,
     match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number'], // Regex for phone number validation
   },
-  // department: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Department',  // Reference to the Department model
-  //   required: true
-  // },
+  profile: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
+    // required: true
+  }],
 })
 
 // model
