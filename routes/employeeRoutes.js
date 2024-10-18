@@ -1,5 +1,5 @@
 import express from 'express';
-import EmployeeController from '../Controllers/EmployeeController.js'; 
+import EmployeeController from '../Controllers/EmployeeController.js';
 const router = express.Router();
 
 // Route to add an employee
@@ -16,5 +16,8 @@ router.put('/:id', EmployeeController.updateEmployee);
 
 // Route to delete an employee by ID
 router.delete('/:id', EmployeeController.deleteEmployee);
+
+// Assign profile to employee
+router.post('/assignprofile', EmployeeController.assignProfile);
 
 export default router;

@@ -1,5 +1,5 @@
 import EmployeeModel from '../Models/Employee.js'
-import Department from '../Models/Department.js';
+import ProfileModel from '../Models/Profile.js';
 
 class EmployeeController {
 
@@ -132,6 +132,64 @@ class EmployeeController {
       res.status(500).send({
         status: "failed",
         message: "Failed to delete employee",
+      });
+    }
+  };
+
+  // Assign profile to employee
+  static assignProfile = async (req, res) => {
+    const { employeeId, profileId } = req.body;
+
+    try {
+      const employee = await EmployeeModel.findById(employeeId.employeeId);
+
+      if (!employee) {
+        return res.status(404).send({
+          status: "failed",
+          message: "Employee not found",
+        });
+      }
+
+      // Check if all profileIds exist in the Profile collection
+      const profiles = await ProfileModel.find({ _id: { $in: profileId } });
+
+      if (profiles.length !== profileId.length) {
+        return res.status(404).send({
+          status: "failed",
+          message: "One or more profiles not found",
+        });
+      }
+
+      // Filter out profiles that are already assigned to the employee
+      const unassignedProfiles = profileId.filter(profileId =>
+        !employee.profile.includes(profileId)
+      );
+
+
+      if (unassignedProfiles.length === 0) {
+        return res.status(400).send({
+          status: "failed",
+          message: "All selected profiles are already assigned to this employee",
+        });
+      }
+
+      // Add unassigned profiles to the employee's profile array
+      employee.profile.push(...unassignedProfiles);
+
+      // Save the updated employee
+      await employee.save();
+
+      res.status(200).send({
+        status: "success",
+        message: "Profiles assigned to employee successfully",
+        data: employee,
+      });
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        status: "failed",
+        message: "Failed to assign profile to employee",
       });
     }
   };
