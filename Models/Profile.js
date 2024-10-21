@@ -16,8 +16,6 @@ const profileSchema = new mongoose.Schema({
     ref: "Department",
     required: true
   }
-
-
 })
 
 // model
