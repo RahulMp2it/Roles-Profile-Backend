@@ -31,19 +31,19 @@ export const getAllSkills = async (req, res) => {
   }
 };
 
-// Get skill by ID
-export const getSkillById = async (req, res) => {
+// Get skill by ID(data will show according to the profile id)
+export const getSkillByProfileId = async (req, res) => {
   try {
-    const { id } = req.params;
-    const skill = await Skill.findById(id);
+    const { profileId } = req.params;
+    const skills = await Skill.find({ profile: profileId });
 
-    if (!skill) {
-      return res.status(404).json({ message: "Skill not found." });
+    if (!skills) {
+      return res.status(404).json({ message: "Skills not found." });
     }
 
-    res.status(200).json(skill);
+    res.status(200).json(skills);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching skill.", error: error.message });
+    res.status(500).json({ message: "Error fetching skills.", error: error.message });
   }
 };
 

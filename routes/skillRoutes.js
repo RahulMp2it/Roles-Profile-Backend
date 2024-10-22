@@ -3,7 +3,7 @@ import express from 'express';
 import {
   createSkill,
   getAllSkills,
-  getSkillById,
+  getSkillByProfileId,
   updateSkill,
   deleteSkill
 } from '../Controllers/skillController.js';
@@ -17,7 +17,7 @@ skillRouter.post('/', createSkill);
 skillRouter.get('/', getAllSkills);
 
 // GET /api/skills/:id - Get a skill by ID
-skillRouter.get('/:id', getSkillById);
+skillRouter.get('/:profileId', getSkillByProfileId);
 
 // PUT /api/skills/:id - Update a skill by ID
 skillRouter.put('/:id', updateSkill);
