@@ -9,6 +9,9 @@ import departRouter from './routes/departmentRoutes.js'
 import designationRouter from './routes/designationRoutes.js'
 import profileRouter from './routes/profileRoutes.js'
 import skillRouter from './routes/skillRoutes.js'
+import roleRouter from './routes/roleRoutes.js'
+import interviewRouter from './routes/interviewRoutes.js'
+import knowledgeRouter from './routes/knowledgeRoutes.js'
 
 const app = express()
 const port = process.env.PORT
@@ -30,7 +33,9 @@ app.use('/api/department', departRouter);
 app.use('/api/designation', designationRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/skill', skillRouter);
-
+app.use('/api/role', roleRouter);
+app.use('/api/interview', interviewRouter)
+app.use('/api/knowledge', knowledgeRouter)
 
 
 app.listen(port, () => {
