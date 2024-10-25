@@ -6,23 +6,14 @@ import {
   getBehaviourByProfileId,
   updateBehaviour,
   deleteBehaviour
-} from "../Controllers/BehaviourController.js";
+} from "../Controllers/BehaviourCOntroller.js";
 
-const router = express.Router();
+const behaviourRouter = express.Router();
 
-// Route to create a new behaviour entry
-router.post("/", createBehaviour);
+behaviourRouter.post("/", createBehaviour);
+behaviourRouter.get("/", getAllBehaviours);
+behaviourRouter.get("/:profileId", getBehaviourByProfileId);
+behaviourRouter.put("/:id", updateBehaviour);
+behaviourRouter.delete("/:id", deleteBehaviour);
 
-// Route to get all behaviour entries
-router.get("/", getAllBehaviours);
-
-// Route to get behaviour entries by profile ID
-router.get("/profile/:profileId", getBehaviourByProfileId);
-
-// Route to update a behaviour entry by ID
-router.put("/:id", updateBehaviour);
-
-// Route to delete a behaviour entry by ID
-router.delete("/:id", deleteBehaviour);
-
-export default router;
+export default behaviourRouter;

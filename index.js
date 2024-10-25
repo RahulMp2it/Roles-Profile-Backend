@@ -12,6 +12,9 @@ import skillRouter from './routes/skillRoutes.js'
 import roleRouter from './routes/roleRoutes.js'
 import interviewRouter from './routes/interviewRoutes.js'
 import knowledgeRouter from './routes/knowledgeRoutes.js'
+import behaviourRouter from './routes/behaviourRoutes.js'
+import roleTaskRouter from './routes/roleTaskRoutes.js'
+import instructionRouter from './routes/roleInstructionRoutes.js'
 
 const app = express()
 const port = process.env.PORT
@@ -36,7 +39,9 @@ app.use('/api/skill', skillRouter);
 app.use('/api/role', roleRouter);
 app.use('/api/interview', interviewRouter)
 app.use('/api/knowledge', knowledgeRouter)
-
+app.use('/api/behaviour', behaviourRouter)
+app.use('/api/task', roleTaskRouter)
+app.use('/api/instruction', instructionRouter)
 
 app.listen(port, () => {
   console.log(`server listening at http://localhost:${port}`)

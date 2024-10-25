@@ -5,7 +5,7 @@ export const createBehaviour = async (req, res) => {
   try {
     const { behaviour, profileId } = req.body;
 
-    // Check if the behaviour already exists for the same profile
+    // Check if behaviour already exists for the same profile
     const existingBehaviour = await Behaviour.findOne({ behaviour, profile: profileId });
     if (existingBehaviour) {
       return res.status(400).json({ message: "Behaviour already exists for this profile." });
