@@ -21,6 +21,13 @@ const employeeSchema = new mongoose.Schema({
     ref: 'Profile',
     // required: true
   }],
+  department:
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Department',
+    // required: true
+  },
+
 })
 
 // model

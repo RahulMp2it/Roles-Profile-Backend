@@ -51,6 +51,32 @@ class ProfileController {
     }
   }
 
+  // Get profiles by department ID
+  static getProfilesByDepartment = async (req, res) => {
+    const { departmentId } = req.params;
+    // console.log(departmentId);
+    try {
+      const profiles = await ProfileModel.find({ department: departmentId });
+      if (profiles.length > 0) {
+        res.status(200).send({
+          status: "success",
+          data: profiles,
+        });
+      } else {
+        res.status(404).send({
+          status: "failed",
+          message: "No profiles found for this department",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        status: "failed",
+        message: "Error fetching profiles by department",
+      });
+    }
+  };
+
   // Get details of a single profile by ID (populate department and designation)
   static getProfile = async (req, res) => {
     try {

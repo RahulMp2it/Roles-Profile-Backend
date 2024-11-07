@@ -9,4 +9,7 @@ designationRouter.get('/', DesignationController.getAllDesignations);
 designationRouter.put('/:id', DesignationController.updateDesignation);
 designationRouter.delete('/:id', DesignationController.deleteDesignation);
 
+designationRouter.get('/department/:departmentId', DesignationController.getDesignationsByDepartment);
+
+
 export default designationRouter;

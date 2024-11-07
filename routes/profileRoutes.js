@@ -18,4 +18,7 @@ profileRouter.put('/:id', ProfileController.updateProfile);
 // Delete a profile by ID
 profileRouter.delete('/:id', ProfileController.deleteProfile);
 
+profileRouter.get('/department/:departmentId', ProfileController.getProfilesByDepartment);
+
+
 export default profileRouter;

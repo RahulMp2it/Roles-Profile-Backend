@@ -37,6 +37,31 @@ class EmployeeController {
     }
   };
 
+  // Get employees by department ID
+  static getEmployeesByDepartment = async (req, res) => {
+    const { departmentId } = req.params;
+    try {
+      const employees = await EmployeeModel.find({ department: departmentId });
+      if (employees.length > 0) {
+        res.status(200).send({
+          status: "success",
+          data: employees,
+        });
+      } else {
+        res.status(404).send({
+          status: "failed",
+          message: "No employees found for this department",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        status: "failed",
+        message: "Error fetching employees by department",
+      });
+    }
+  };
+
   // Get details of a single employee by ID
   static getEmployee = async (req, res) => {
     try {

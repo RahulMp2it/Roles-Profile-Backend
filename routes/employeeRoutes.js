@@ -20,4 +20,8 @@ router.delete('/:id', EmployeeController.deleteEmployee);
 // Assign profile to employee
 router.post('/assignprofile', EmployeeController.assignProfile);
 
+// Route to get employees by department
+router.get('/department/:departmentId', EmployeeController.getEmployeesByDepartment);
+
+
 export default router;
