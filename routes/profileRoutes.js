@@ -19,6 +19,7 @@ profileRouter.put('/:id', ProfileController.updateProfile);
 profileRouter.delete('/:id', ProfileController.deleteProfile);
 
 profileRouter.get('/department/:departmentId', ProfileController.getProfilesByDepartment);
+profileRouter.get('/designation/:designationId', ProfileController.getProfilesByDesignation);
 
 
 export default profileRouter;
