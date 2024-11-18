@@ -23,7 +23,7 @@ class EmployeeController {
           name,
           email,
           phone,
-          department: foundDepartment._id, // Store department reference
+          department: foundDepartment._id, // Store d1epartment reference
         });
 
         // Save employee to the database

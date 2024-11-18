@@ -71,6 +71,35 @@ class DesignationController {
     }
   };
 
+  // Get department by designation ID
+  static getDepartmentByDesignationId = async (req, res) => {
+    const { designationId } = req.params;
+
+    try {
+      // Find the designation and populate the associated department
+      const designation = await DesignationModel.findById(designationId).populate("department", "DepartmentName");
+
+      if (designation && designation.department) {
+        res.status(200).send({
+          status: "success",
+          data: designation.department,
+        });
+      } else {
+        res.status(404).send({
+          status: "failed",
+          message: "Department not found for the given designation ID",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        status: "failed",
+        message: "Failed to fetch department by designation ID",
+      });
+    }
+  };
+
+
   // Get details of a single designation by ID (populate department)
   static getDesignation = async (req, res) => {
     try {
