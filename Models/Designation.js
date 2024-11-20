@@ -3,12 +3,11 @@ import mongoose from "mongoose";
 // Defining Schema
 const designationSchema = new mongoose.Schema({
   DesignationName: { type: String, required: true, trime: true },
-
-  department: {
+  department: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Department",
+    ref: 'Department',
     required: true
-  },
+  }],
 
 });
 
