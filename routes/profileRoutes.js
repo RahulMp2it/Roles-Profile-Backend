@@ -21,5 +21,8 @@ profileRouter.delete('/:id', ProfileController.deleteProfile);
 profileRouter.get('/department/:departmentId', ProfileController.getProfilesByDepartment);
 profileRouter.get('/designation/:designationId', ProfileController.getProfilesByDesignation);
 
+profileRouter.get("/designationsbydepartment/:departmentId", ProfileController.getDesignationsByDepartment);
+
+
 
 export default profileRouter;

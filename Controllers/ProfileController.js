@@ -103,6 +103,35 @@ class ProfileController {
     }
   };
 
+  // Get designations by department ID
+  static getDesignationsByDepartment = async (req, res) => {
+    const { departmentId } = req.params;
+
+    try {
+      // Find designations matching the department ID
+      const designations = await Designation.find({ department: departmentId });
+
+      if (designations.length > 0) {
+        res.status(200).send({
+          status: "success",
+          data: designations,
+        });
+      } else {
+        res.status(404).send({
+          status: "failed",
+          message: "No designations found for this department",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        status: "failed",
+        message: "Failed to fetch designations by department ID",
+      });
+    }
+  };
+
+
   // Get details of a single profile by ID (populate department and designation)
   static getProfile = async (req, res) => {
     try {

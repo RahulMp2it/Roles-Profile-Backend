@@ -6,11 +6,12 @@ import {
   updateTrainingMaterial,
   deleteTrainingMaterial,
 } from '../Controllers/TrainingMaterialController.js';
+import upload from "../middlewares/multerConfig.js"
 
 const trainingRouter = express.Router();
 
 // POST /api/training-materials - Create a new training material
-trainingRouter.post('/', createTrainingMaterial);
+trainingRouter.post('/', upload.single("document"), createTrainingMaterial);
 
 // GET /api/training-materials - Get all training materials
 trainingRouter.get('/', getAllTrainingMaterials);
