@@ -1,28 +1,24 @@
 import express from 'express';
+import multer from '../middlewares/multerConfig.js'; // Middleware for file validation
 import {
   createTrainingMaterial,
   getAllTrainingMaterials,
-  getTrainingMaterialById,
-  updateTrainingMaterial,
+  getTrainingMaterialsByType,
   deleteTrainingMaterial,
 } from '../Controllers/TrainingMaterialController.js';
-import upload from "../middlewares/multerConfig.js"
 
 const trainingRouter = express.Router();
 
-// Create a new training material
-trainingRouter.post('/', upload.single("document"), createTrainingMaterial);
+// Route to create a new training material
+trainingRouter.post('/upload', multer.single('file'), createTrainingMaterial);
 
-// Get all training materials
+// Route to get all training materials
 trainingRouter.get('/', getAllTrainingMaterials);
 
-// Get a training material by ID
-trainingRouter.get('/:id', getTrainingMaterialById);
+// Route to get training materials by file type
+trainingRouter.get('/:fileType', getTrainingMaterialsByType);
 
-// Update a training material by ID
-trainingRouter.put('/:id', updateTrainingMaterial);
-
-// Delete a training material by ID
+// Route to delete a training material by ID
 trainingRouter.delete('/:id', deleteTrainingMaterial);
 
 export default trainingRouter;
