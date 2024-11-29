@@ -3,7 +3,7 @@ import multer from '../middlewares/multerConfig.js'; // Middleware for file vali
 import {
   createTrainingMaterial,
   getAllTrainingMaterials,
-  getTrainingMaterialsByType,
+  getTrainingMaterialsByProfile,
   deleteTrainingMaterial,
 } from '../Controllers/TrainingMaterialController.js';
 
@@ -15,8 +15,8 @@ trainingRouter.post('/upload', multer.single('file'), createTrainingMaterial);
 // Route to get all training materials
 trainingRouter.get('/', getAllTrainingMaterials);
 
-// Route to get training materials by file type
-trainingRouter.get('/:fileType', getTrainingMaterialsByType);
+// Route to get training materials by profile ID
+trainingRouter.get('/:profileId', getTrainingMaterialsByProfile);
 
 // Route to delete a training material by ID
 trainingRouter.delete('/:id', deleteTrainingMaterial);
