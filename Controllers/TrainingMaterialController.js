@@ -2,7 +2,6 @@ import TrainingMaterialModel from '../models/TrainingMaterial.js';
 
 
  // Create a new training material
- 
 export const createTrainingMaterial = async (req, res) => {
   try {
     const { fileType, profileId } = req.body;
