@@ -1,30 +1,37 @@
-import Role from "../Models/Role.js";
+import roleModel from "../Models/Role.js";
+// import Role from "../Models/Role.js";
 
 // Create a new role
 export const createRole = async (req, res) => {
-  try {
-    const { role, profileId } = req.body;
+    const { roles, profileId } = req.body;
 
-    // Check if role already exists
-    const existingRole = await Role.findOne({ role });
-    if (existingRole) {
-      return res.status(400).json({ message: "Role already exists." });
+    console.log('profileId',profileId);
+    
+
+    if (!Array.isArray(roles) || roles.length === 0) {
+      return res.status(400).json({ message: "Roles must be a non-empty array." });
     }
-
-    // Create new role
-    const newRole = new Role({ role, profile: profileId });
-    await newRole.save();
-
-    res.status(201).json({ message: "Role created successfully.", role: newRole });
-  } catch (error) {
-    res.status(500).json({ message: "Error creating role.", error: error.message });
-  }
+    try {
+      // Map roles to the schema structure
+      const roleDocs = roles.map((role) => ({ role, profile: profileId }));
+  
+      // Insert all roles at once
+      const createdRoles = await roleModel.insertMany(roleDocs);
+  
+      res.status(201).json({
+        message: "Roles created successfully.",
+        roles: createdRoles,
+      });
+    } catch (error) {
+      console.error("Error creating roles:", error);
+      res.status(500).json({ message: "Error creating roles.", error });
+    }
 };
 
 // Get all roles
 export const getAllRoles = async (req, res) => {
   try {
-    const roles = await Role.find({});
+    const roles = await roleModel.find({});
     res.status(200).json(roles);
   } catch (error) {
     res.status(500).json({ message: "Error fetching roles.", error: error.message });
@@ -35,7 +42,7 @@ export const getAllRoles = async (req, res) => {
 export const getRoleByProfileId = async (req, res) => {
   try {
     const { profileId } = req.params;
-    const roles = await Role.find({ profile: profileId });
+    const roles = await roleModel.find({ profile: profileId });
 
     if (!roles) {
       return res.status(404).json({ message: "Roles not found." });
@@ -53,7 +60,7 @@ export const updateRole = async (req, res) => {
     const { id } = req.params;
     const { role } = req.body;
 
-    const updatedRole = await Role.findByIdAndUpdate(id, { role }, { new: true });
+    const updatedRole = await roleModel.findByIdAndUpdate(id, { role }, { new: true });
 
     if (!updatedRole) {
       return res.status(404).json({ message: "Role not found." });
@@ -69,7 +76,7 @@ export const updateRole = async (req, res) => {
 export const deleteRole = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedRole = await Role.findByIdAndDelete(id);
+    const deletedRole = await roleModel.findByIdAndDelete(id);
 
     if (!deletedRole) {
       return res.status(404).json({ message: "Role not found." });
