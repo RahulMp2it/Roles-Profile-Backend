@@ -1,37 +1,38 @@
-import RoleTask from "../Models/RoleTask.js";
-import Role from "../Models/Role.js";
+import roleTaskModel from "../Models/RoleTask.js";
+
 
 // Create a new task
 export const createRoleTask = async (req, res) => {
+
+  const { roleTasks, roleId } = req.body;
+
+  // Validate request
+  if (!Array.isArray(roleTasks) || roleTasks.length === 0) {
+    return res.status(400).json({ message: "Role tasks must be a non-empty array." });
+  }
+  if (!roleId) {
+    return res.status(400).json({ message: "Role ID is required." });
+  }
   try {
-    const { roleTask, roleId } = req.body;
+    // Prepare RoleTask documents
+    const roleTaskDocs = roleTasks.map((task) => ({
+      roleTask: task,
+      role: roleId,
+    }));
 
-    // Check if task already exists for the role
-    const existingTask = await RoleTask.findOne({ roleTask, role: roleId });
-    if (existingTask) {
-      return res.status(400).json({ error: "Task already exists for this role." });
-    }
-
-    // Check if the role exists
-    const role = await Role.findById(roleId);
-    if (!role) {
-      return res.status(404).json({ error: "Role not found." });
-    }
-
-    // Create new role task
-    const newRoleTask = new RoleTask({ roleTask, role: roleId });
-    await newRoleTask.save();
-
-    res.status(201).json({ message: "Task created successfully.", task: newRoleTask });
+    // Insert RoleTasks in bulk
+    const createdRoleTasks = await roleTaskModel.insertMany(roleTaskDocs);
+    res.status(201).json({ message: "Role tasks created successfully.", roleTasks: createdRoleTasks });
   } catch (error) {
-    res.status(500).json({ message: "Error creating task.", error: error.message });
+    console.error("Error creating role tasks:", error);
+    res.status(500).json({ message: "Error creating role tasks.", error });
   }
 };
 
 // Get all tasks
 export const getAllRoleTasks = async (req, res) => {
   try {
-    const tasks = await RoleTask.find({});
+    const tasks = await roleTaskModel.find({});
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Error fetching tasks.", error: error.message });
@@ -42,7 +43,7 @@ export const getAllRoleTasks = async (req, res) => {
 export const getTasksByRoleId = async (req, res) => {
   try {
     const { roleId } = req.params;
-    const tasks = await RoleTask.find({ role: roleId });
+    const tasks = await roleTaskModel.find({ role: roleId });
 
     if (!tasks || tasks.length === 0) {
       return res.status(404).json({ message: "No tasks found for this role." });
@@ -60,7 +61,7 @@ export const updateRoleTask = async (req, res) => {
     const { id } = req.params;
     const { roleTask } = req.body;
 
-    const updatedTask = await RoleTask.findByIdAndUpdate(id, { roleTask }, { new: true });
+    const updatedTask = await roleTaskModel.findByIdAndUpdate(id, { roleTask }, { new: true });
 
     if (!updatedTask) {
       return res.status(404).json({ message: "Task not found." });
@@ -76,7 +77,7 @@ export const updateRoleTask = async (req, res) => {
 export const deleteRoleTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedTask = await RoleTask.findByIdAndDelete(id);
+    const deletedTask = await roleTaskModel.findByIdAndDelete(id);
 
     if (!deletedTask) {
       return res.status(404).json({ message: "Task not found." });
