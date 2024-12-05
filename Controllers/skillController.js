@@ -1,30 +1,43 @@
-import Skill from "../Models/Skill.js";
+import skillModel from "../Models/Skill.js";
+// import Skill from "../Models/Skill.js";
 
 // Create a new skill
 export const createSkill = async (req, res) => {
+
+    const { skills, profileId } = req.body;
+
+   // Validate request
+  if (!Array.isArray(skills) || skills.length === 0) {
+    return res.status(400).json({ message: "Skills must be a non-empty array." });
+  }
+  if (!profileId) {
+    return res.status(400).json({ message: "Profile ID is required." });
+  }
+
   try {
-    const { skill, profileId } = req.body;
+    // Prepare skill documents
+    const skillDocs = skills.map((skill) => ({
+      skill: skill, // Skill name
+      profile: profileId, // Associated profile ID
+    }));
 
-    // Check if skill already exists
-    const existingSkill = await Skill.findOne({ skill });
-    if (existingSkill) {
-      return res.status(400).json({ message: "Skill already exists." });
-    }
+    // Insert skills in bulk
+    const createdSkills = await skillModel.insertMany(skillDocs);
 
-    // Create new skill
-    const newSkill = new Skill({ skill, profile: profileId });
-    await newSkill.save();
-
-    res.status(201).json({ message: "Skill created successfully.", skill: newSkill });
+    res.status(201).json({
+      message: "Skills created successfully.",
+      skills: createdSkills,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error creating skill.", error: error.message });
+    console.error("Error creating skills:", error);
+    res.status(500).json({ message: "Error creating skills.", error });
   }
 };
 
 // Get all skills
 export const getAllSkills = async (req, res) => {
   try {
-    const skills = await Skill.find({});
+    const skills = await skillModel.find({});
     res.status(200).json(skills);
   } catch (error) {
     res.status(500).json({ message: "Error fetching skills.", error: error.message });
@@ -35,7 +48,7 @@ export const getAllSkills = async (req, res) => {
 export const getSkillByProfileId = async (req, res) => {
   try {
     const { profileId } = req.params;
-    const skills = await Skill.find({ profile: profileId });
+    const skills = await skillModel.find({ profile: profileId });
 
     if (!skills) {
       return res.status(404).json({ message: "Skills not found." });
@@ -53,7 +66,7 @@ export const updateSkill = async (req, res) => {
     const { id } = req.params;
     const { skill } = req.body;
 
-    const updatedSkill = await Skill.findByIdAndUpdate(id, { skill }, { new: true });
+    const updatedSkill = await skillModel.findByIdAndUpdate(id, { skill }, { new: true });
 
     if (!updatedSkill) {
       return res.status(404).json({ message: "Skill not found." });
@@ -69,7 +82,7 @@ export const updateSkill = async (req, res) => {
 export const deleteSkill = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedSkill = await Skill.findByIdAndDelete(id);
+    const deletedSkill = await skillModel.findByIdAndDelete(id);
 
     if (!deletedSkill) {
       return res.status(404).json({ message: "Skill not found." });
