@@ -3,16 +3,15 @@ import Interview from "../Models/Interview.js";
 // Create a new interview
 export const createInterview = async (req, res) => {
   try {
-    const { interview, profileId } = req.body;
+    const { stages, profileId } = req.body; // Expecting an array of stages with time
 
-    // Check if interview already exists
-    const existingInterview = await Interview.findOne({ interview });
-    if (existingInterview) {
-      return res.status(400).json({ message: "Interview already exists." });
+    // Validation: Check if stages are provided
+    if (!stages || stages.length === 0) {
+      return res.status(400).json({ message: "Stages and time are required." });
     }
 
     // Create new interview
-    const newInterview = new Interview({ interview, profile: profileId });
+    const newInterview = new Interview({ stages, profile: profileId });
     await newInterview.save();
 
     res.status(201).json({ message: "Interview created successfully.", interview: newInterview });
@@ -24,7 +23,7 @@ export const createInterview = async (req, res) => {
 // Get all interviews
 export const getAllInterviews = async (req, res) => {
   try {
-    const interviews = await Interview.find({});
+    const interviews = await Interview.find({}).populate("profile", "name");
     res.status(200).json(interviews);
   } catch (error) {
     res.status(500).json({ message: "Error fetching interviews.", error: error.message });
@@ -35,10 +34,10 @@ export const getAllInterviews = async (req, res) => {
 export const getInterviewByProfileId = async (req, res) => {
   try {
     const { profileId } = req.params;
-    const interviews = await Interview.find({ profile: profileId });
 
-    if (!interviews) {
-      return res.status(404).json({ message: "Interviews not found." });
+    const interviews = await Interview.find({ profile: profileId });
+    if (!interviews || interviews.length === 0) {
+      return res.status(404).json({ message: "No interviews found for the given profile." });
     }
 
     res.status(200).json(interviews);
@@ -51,9 +50,17 @@ export const getInterviewByProfileId = async (req, res) => {
 export const updateInterview = async (req, res) => {
   try {
     const { id } = req.params;
-    const { interview } = req.body;
+    const { stages } = req.body; // Expecting updated stages array
 
-    const updatedInterview = await Interview.findByIdAndUpdate(id, { interview }, { new: true });
+    if (!stages || stages.length === 0) {
+      return res.status(400).json({ message: "Stages and time are required for update." });
+    }
+
+    const updatedInterview = await Interview.findByIdAndUpdate(
+      id,
+      { stages },
+      { new: true }
+    );
 
     if (!updatedInterview) {
       return res.status(404).json({ message: "Interview not found." });

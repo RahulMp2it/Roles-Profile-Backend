@@ -2,12 +2,16 @@ import mongoose from "mongoose";
 
 // Defining Schema
 const interviewSchema = mongoose.Schema({
-  interview: { type: String, required: true, trim: true },
-
+  stages: [
+    {
+      stage: { type: String, required: true },
+      time: { type: Number, required: true }, // Time in minutes
+    },
+  ],
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
-    //required:true
+    required:true
   }
 })
 
