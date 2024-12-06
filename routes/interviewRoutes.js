@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  createInterview,
+  addOrUpdateStage,
   getAllInterviews,
   getInterviewByProfileId,
   updateInterview,
@@ -9,7 +9,9 @@ import {
 
 const interviewRouter = express.Router();
 
-interviewRouter.post("/", createInterview);
+// interviewRouter.post("/", createInterview);
+// Route to add a stage or create a new interview
+interviewRouter.post('/stage/:profileId', addOrUpdateStage);
 interviewRouter.get("/", getAllInterviews);
 interviewRouter.get("/:profileId", getInterviewByProfileId);
 interviewRouter.put("/:id", updateInterview);
