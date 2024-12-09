@@ -25,8 +25,8 @@ export const addOrUpdateStage = async (req, res) => {
   const { profileId } = req.params; // Assume profileId comes from the route
   const { stage, time } = req.body; // Stage and time come from the request body
 
-  console.log("stage is==>", stage);
-  console.log("time is==>", time);
+  // console.log("stage is==>", stage);
+  // console.log("time is==>", time);
   
   try {
     // Check if an interview document exists for the given profileId
