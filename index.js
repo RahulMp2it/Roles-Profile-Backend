@@ -1,4 +1,4 @@
-  import dotenv from 'dotenv'
+import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
 import cors from 'cors'
@@ -16,6 +16,12 @@ import behaviourRouter from './routes/behaviourRoutes.js'
 import roleTaskRouter from './routes/roleTaskRoutes.js'
 import instructionRouter from './routes/roleInstructionRoutes.js'
 import trainingRouter from './routes/trainingMaterialRoutes.js'
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Define __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express()
 const port = process.env.PORT
@@ -29,6 +35,8 @@ connectDB(DATABASE_URL)
 
 //JSON
 app.use(express.json())
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Load Routes
 app.use("/api/user", userRoutes)
