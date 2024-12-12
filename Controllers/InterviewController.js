@@ -1,32 +1,9 @@
 import Interview from "../Models/Interview.js";
 
-// Create a new interview
-// export const createInterview = async (req, res) => {
-//   try {
-//     const { stages, profileId } = req.body; // Expecting an array of stages with time
-
-//     // Validation: Check if stages are provided
-//     if (!stages || stages.length === 0) {
-//       return res.status(400).json({ message: "Stages and time are required." });
-//     }
-
-//     // Create new interview
-//     const newInterview = new Interview({ stages, profile: profileId });
-//     await newInterview.save();
-
-//     res.status(201).json({ message: "Interview created successfully.", interview: newInterview });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error creating interview.", error: error.message });
-//   }
-// };
-
 // Add a stage or create a new interview
 export const addOrUpdateStage = async (req, res) => {
   const { profileId } = req.params; // Assume profileId comes from the route
   const { stage, time } = req.body; // Stage and time come from the request body
-
-  // console.log("stage is==>", stage);
-  // console.log("time is==>", time);
   
   try {
     // Check if an interview document exists for the given profileId
@@ -47,7 +24,7 @@ export const addOrUpdateStage = async (req, res) => {
       res.status(201).json({ message: 'New interview created with the stage', interview });
     }
   } catch (error) {
-    console.error('Error adding or updating stage:', error);
+    console.error('Error adding or updating stage:', error);  
     res.status(500).json({ error: 'Failed to add or update stage' });
   }
 };
