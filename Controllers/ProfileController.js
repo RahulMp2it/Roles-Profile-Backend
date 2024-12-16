@@ -51,6 +51,30 @@ class ProfileController {
     }
   }
 
+// Get profile by ID
+static getProfileById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const profile = await ProfileModel.findById(id)
+      .populate('department', 'departmentName') // Populate departmentName
+      .populate('designation', 'designationName'); // Populate designationName
+
+    if (!profile) {
+      return res.status(404).json({ message: 'Profile not found' });
+    }
+
+    res.json({
+      profileName: profile.name,
+      department: profile.department ? profile.department.departmentName : null,
+      designation: profile.designation ? profile.designation.designationName : null,
+    });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
   // Get profiles by department ID
   static getProfilesByDepartment = async (req, res) => {
     const { departmentId } = req.params;
