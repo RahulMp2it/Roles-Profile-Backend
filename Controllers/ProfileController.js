@@ -59,7 +59,7 @@ static getProfileById = async (req, res) => {
     const profile = await ProfileModel.findById(id)
       .populate('department', 'departmentName') // Populate departmentName
       .populate('designation', 'designationName'); // Populate designationName
-
+      
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
