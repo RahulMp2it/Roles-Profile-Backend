@@ -12,12 +12,12 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedMimeTypes = ['application/pdf', 'video/mp4', 'application/msword',];
+  const allowedMimeTypes = ['application/pdf', 'video/mp4', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Invalid file type. Only PDF, MP4, and Word files are allowed.'));
+    cb(new Error('Type not supported'), false);
   }
 };
 
