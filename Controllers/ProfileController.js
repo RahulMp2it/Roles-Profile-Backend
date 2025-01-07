@@ -56,18 +56,21 @@ static getProfileById = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // const profile = await ProfileModel.findById(id)
+    // .populate('department', 'departmentName') // Populate departmentName
+    // .populate('designation', 'designationName'); // Populate designationName
+
     const profile = await ProfileModel.findById(id)
-      .populate('department', 'departmentName') // Populate departmentName
-      .populate('designation', 'designationName'); // Populate designationName
-      
+    .populate('designation').populate('department'); // Populate designationName
+
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
 
     res.json({
-      profileName: profile.name,
-      department: profile.department ? profile.department.departmentName : null,
-      designation: profile.designation ? profile.designation.designationName : null,
+      profileName: profile.Profile,  
+      department: profile.department ? profile.department.DepartmentName : null,
+      designation: profile.designation ? profile.designation.DesignationName : null,
     });
   } catch (error) {
     console.error('Error fetching profile:', error);
