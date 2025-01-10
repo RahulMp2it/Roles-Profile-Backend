@@ -19,7 +19,7 @@ profileRouter.put('/:id', ProfileController.updateProfile);
 profileRouter.delete('/:id', ProfileController.deleteProfile);
 
 //fetch profile by ID
-profileRouter.get('/:id', ProfileController.getProfileById);
+profileRouter.get('/ram/:id', ProfileController.getProfileById);
 
 profileRouter.get('/department/:departmentId', ProfileController.getProfilesByDepartment);
 profileRouter.get('/designation/:designationId', ProfileController.getProfilesByDesignation);
