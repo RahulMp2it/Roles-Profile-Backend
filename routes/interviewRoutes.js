@@ -9,7 +9,6 @@ import {
 
 const interviewRouter = express.Router();
 
-// interviewRouter.post("/", createInterview);
 // Route to add a stage or create a new interview
 interviewRouter.post('/stage/:profileId', addOrUpdateStage);
 interviewRouter.get("/", getAllInterviews);
