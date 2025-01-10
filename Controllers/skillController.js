@@ -79,7 +79,7 @@ export const updateSkill = async (req, res) => {
 };
 
 // Delete a skill
-export const deleteSkill = async (req, res) => {
+export const deleteSkill = async (req, res) => { 
   try {
     const { id } = req.params;
     const deletedSkill = await skillModel.findByIdAndDelete(id);
