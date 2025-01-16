@@ -3,8 +3,8 @@ import {
   addOrUpdateStage,
   getAllInterviews,
   getInterviewByProfileId,
-  updateInterview,
-  deleteInterview
+  editStage,
+  deleteStage
 } from "../Controllers/InterviewController.js";
 
 const interviewRouter = express.Router();
@@ -13,7 +13,7 @@ const interviewRouter = express.Router();
 interviewRouter.post('/stage/:profileId', addOrUpdateStage);
 interviewRouter.get("/", getAllInterviews);
 interviewRouter.get("/:profileId", getInterviewByProfileId);
-interviewRouter.put("/:id", updateInterview);
-interviewRouter.delete("/:id", deleteInterview);
+interviewRouter.put("/stage/:interviewId/:stageId", editStage);
+interviewRouter.delete("/stage/:interviewId/:stageId", deleteStage);
 
 export default interviewRouter;
