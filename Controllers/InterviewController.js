@@ -56,43 +56,51 @@ export const getInterviewByProfileId = async (req, res) => {
 };
 
 // Update an interview
-export const updateInterview = async (req, res) => {
+export const editStage = async (req, res) => {
+  const { interviewId, stageId } = req.params;
+  const { stage, time } = req.body;
+  console.log("interviewId id is-->", interviewId);
+  console.log("stageId id is-->", stageId);
+  
   try {
-    const { id } = req.params;
-    const { stages } = req.body; // Expecting updated stages array
-
-    if (!stages || stages.length === 0) {
-      return res.status(400).json({ message: "Stages and time are required for update." });
-    }
-
-    const updatedInterview = await Interview.findByIdAndUpdate(
-      id,
-      { stages },
-      { new: true }
+    const interview = await Interview.findOneAndUpdate(
+      { _id: interviewId, "stages._id": stageId }, // Match the interview and specific stage
+      {
+        $set: {
+          "stages.$.stage": stage, // Update the stage name
+          "stages.$.time": time,   // Update the stage time
+        },
+      },
+      { new: true } // Return the updated document
     );
 
-    if (!updatedInterview) {
-      return res.status(404).json({ message: "Interview not found." });
+    if (!interview) {
+      return res.status(404).json({ message: 'Interview or Stage not found' });
     }
 
-    res.status(200).json({ message: "Interview updated successfully.", interview: updatedInterview });
+    res.status(200).json({ message: 'Stage updated successfully', interview });
   } catch (error) {
-    res.status(500).json({ message: "Error updating interview.", error: error.message });
+    res.status(500).json({ message: 'Error updating stage', error });
   }
 };
 
-// Delete an interview
-export const deleteInterview = async (req, res) => {
+// Delete a specific stage
+export const deleteStage = async (req, res) => {
+  const { interviewId, stageId } = req.params;
+   
   try {
-    const { id } = req.params;
-    const deletedInterview = await Interview.findByIdAndDelete(id);
+    const interview = await Interview.findByIdAndUpdate(
+      interviewId,
+      { $pull: { stages: { _id: stageId } } }, // Remove the stage with the given ID
+      { new: true } // Return the updated document
+    );
 
-    if (!deletedInterview) {
-      return res.status(404).json({ message: "Interview not found." });
+    if (!interview) {
+      return res.status(404).json({ message: 'Interview not found' });
     }
 
-    res.status(200).json({ message: "Interview deleted successfully." });
+    res.status(200).json({ message: 'Stage deleted successfully', interview });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting interview.", error: error.message });
+    res.status(500).json({ message: 'Error deleting stage', error });
   }
 };
