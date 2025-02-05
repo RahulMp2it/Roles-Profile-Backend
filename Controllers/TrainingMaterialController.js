@@ -1,6 +1,5 @@
 import TrainingMaterialModel from '../models/TrainingMaterial.js';
 
-
  // Create a new training material
 export const createTrainingMaterial = async (req, res) => {
   try {
@@ -27,7 +26,6 @@ export const createTrainingMaterial = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
  //Get all training materials
  
